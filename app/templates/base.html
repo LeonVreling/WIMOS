@@ -1,0 +1,82 @@
+
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{url_for('.static', filename='css/styles.css')}}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+        {% if title %}
+        <title>{{ title }} - GEWIS E-moties</title>
+        {% else %}
+        <title>KVLS Crazy88</title>
+        {% endif %}
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="{{ url_for('.static', filename='img/logo.png') }}" width="30px" alt="">
+                Crazy88
+            </a>
+
+            <ul class="navbar-nav ml-auto">
+                {% if current_user.is_anonymous %}
+                    {% with page = url_for('user.login') %}
+                    <li class="nav-item {% if page == request.path %}active{% endif %}">
+                        <a class="nav-link" href="{{ page }}">Log in</a>
+                    </li>
+                    {% endwith %}
+                {% else %}
+                    {% with page = url_for('user.logout') %}
+                    <li class="nav-item {% if page == request.path %}active{% endif %}">
+                        <a class="nav-link" href="{{ page }}">Log uit</a>
+                    </li>
+                    {% endwith %}
+                {% endif %}
+            </ul>
+        </nav>
+
+        <div class="container-lg">
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+
+        </div>
+
+        <footer class="footer">
+            <div>
+                © Roy Kakkenberg - 2020
+            </div>
+        </footer>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script>
+            window.setTimeout(function () {
+                $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                    $(this).remove();
+                });
+            }, 4000);
+        </script>
+        {% block scripts %}{% endblock %}
+
+    </body>
+</html>
