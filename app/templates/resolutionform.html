@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.alcohol.label }}
+            {{ form.alcohol }}
+        </p>
+        <p>
+            De leden van het WISO, ter overleg bijeen op 3 juli 2020 te Teams (wat betekent Groepen), constaterende dat<br>
+            {{ form.observation }},
+        </p>
+        <p>
+            overwegende dat<br>
+            {{ form.consideration }},
+        </p>
+        <p>
+            dragen het WISO op<br>
+            {{ form.decision }},<br>
+            en gaan over tot de orde van de dag.
+        </p>
+        <p>
+            {{ form.submit }}
+        </p>
+    </form>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <table>
+        {% for r in resolutions %}
+        <tr>
+            <td>
+                2020.{{ r.id }}
+            </td>
+            <td>
+                De leden van het WISO, ter overleg bijeen op 4 juli 2020 te Microsoft Teams (wat betekent Groepen), gehoord de beraadslagingen, constaterende dat <b>{{ r.observation }}</b>, overwegende dat <b>{{ r.consideration }}</b>, dragen het WISO op <b>{{ r.decision }}</b> en gaan over tot de orde van de dag.
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
