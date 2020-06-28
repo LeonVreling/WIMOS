@@ -14,15 +14,36 @@ def index():
     if not current_user.is_authenticated:
         return render_template('index.html')
 
-    print(current_user.has_roles('Admin'))
-    print(current_user.roles)
-    return render_template('resolutions.html', resolutions=Resolution.query.all())
+    resolutions = Resolution.query.all()
+
+    return render_template('resolutions.html', resolutions=resolutions, Vote=Vote, Seen=Seen)
 
 
 @app.route('/moties/<id>')
 @login_required
 def resolution(id):
     pass
+
+
+@app.route('/moties/<id>/voor')
+@roles_required('Voorzitter')
+def vote_resolution(id):
+    res = Resolution.query.get(id)
+    vote = Vote(resolution_id=res.id, association=current_user.association, timestamp=datetime.now())
+    db.session.add(vote)
+    db.session.commit()
+    mark_resolution_as_seen(id)
+    return redirect(url_for('index'))
+
+
+@app.route('/moties/<id>/gezien')
+@roles_required('Voorzitter')
+def mark_resolution_as_seen(id):
+    res = Resolution.query.get(id)
+    seen = Seen(resolution_id=res.id, association=current_user.association, timestamp=datetime.now())
+    db.session.add(seen)
+    db.session.commit()
+    return redirect(url_for('index'))
 
 
 @app.route('/moties/indienen', methods=['GET', 'POST'])
@@ -43,7 +64,7 @@ def submit_resolution():
 
 @app.route('/leden/toevoegen', methods=['GET', 'POST'])
 @login_required
-@roles_required('Admin')
+@roles_required('Voorzitter')
 def register_board_member():
     form = RegisterForm()
     if form.validate_on_submit():

@@ -2,6 +2,10 @@ from app import db
 from flask_user import UserMixin
 
 
+def vote_to_association(vote):
+    return vote.association
+
+
 # 1 --> Admin
 # 2 --> Organisator
 # 3 --> Voorzitter
@@ -32,6 +36,18 @@ class UserRoles(db.Model):
     role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
 
 
+class Vote(db.Model):
+    resolution_id = db.Column(db.Integer(), db.ForeignKey('resolution.id'), primary_key=True)
+    association = db.Column(db.String(), primary_key=True)
+    timestamp = db.Column(db.DateTime())
+
+
+class Seen(db.Model):
+    resolution_id = db.Column(db.Integer(), db.ForeignKey('resolution.id'), primary_key=True)
+    association = db.Column(db.String(), primary_key=True)
+    timestamp = db.Column(db.DateTime())
+
+
 class Resolution(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     observation = db.Column(db.String(512), nullable=False)
@@ -41,9 +57,11 @@ class Resolution(db.Model):
     timestamp = db.Column(db.DateTime())
     passed = db.Column(db.Boolean())
     alcohol = db.Column(db.Boolean())
+    votes = db.relationship('Vote', backref='resolution', lazy='dynamic')
+    seen_by = db.relationship('Seen', backref='resolution', lazy='dynamic')
 
+    def vote_list(self):
+        return list(map(vote_to_association, self.votes))
 
-class Vote(db.Model):
-    resolution_id = db.Column(db.Integer(), db.ForeignKey('resolution.id'), primary_key=True)
-    association = db.Column(db.String(), primary_key=True)
-    timestamp = db.Column(db.DateTime())
+    def seen_list(self):
+        return list(map(vote_to_association, self.seen_by))

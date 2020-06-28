@@ -1,8 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
+    Welkom, {{ current_user.username }}! Je hebt de rol van {% if current_user.has_roles('Voorzitter') %}Voorzitter. Je kan hieronder stemmen op moties. In het menu kun je het formulier vinden om moties in te dienen.
+    {% elif current_user.has_roles('Bestuurslid') %}Bestuurslid. Vraag je voorzitter om te stemmen op moties. In het menu kun je het formulier vinden om moties in te dienen.
+    {% else %}Kandi. Je kan alleen moties bekijken! Gelukkig voor jou is het WISO fysiek, dus hoef je geen moties rond te delen. Dat is boffen!{% endif %}
     <table>
+        <thead>
+            <tr>
+                <th>Nummer</th>
+                <th>Motie</th>
+                <th>Voor</th>
+                <th>Gezien</th>
+                <th>Acties</th>
+            </tr>
+        </thead>
         {% for r in resolutions %}
+            {% with votes = r.vote_list() %}
+            {% with seen = r.seen_list() %}
         <tr>
             <td>
                 2020.{{ r.id }}
@@ -10,7 +24,29 @@
             <td>
                 De leden van het WISO, ter overleg bijeen op 4 juli 2020 te Microsoft Teams (wat betekent Groepen), gehoord de beraadslagingen, constaterende dat <b>{{ r.observation }}</b>, overwegende dat <b>{{ r.consideration }}</b>, dragen het WISO op <b>{{ r.decision }}</b> en gaan over tot de orde van de dag.
             </td>
+            <td>
+                {% for vote in votes %}
+                    {{ vote }},
+                {% endfor %}
+            </td>
+            <td>
+                {% for seen in seen %}
+                    {{ seen }},
+                {% endfor %}
+            </td>
+            <td>
+                {% if current_user.has_roles('Voorzitter') %}
+                    {% if not current_user.association in votes %}
+                        <a href="{{ url_for('vote_resolution', id=r.id) }}" class="button btn" >Voor</a>
+                    {% endif %}
+                    {% if not current_user.association in seen %}
+                        <a href="{{ url_for('mark_resolution_as_seen', id=r.id) }}" class="button btn">Gezien</a>
+                    {% endif %}
+                {% endif %}
+            </td>
         </tr>
+            {% endwith %}
+            {% endwith %}
         {% endfor %}
     </table>
 {% endblock %}
