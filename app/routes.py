@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from flask import render_template, flash, redirect, url_for, request
-from werkzeug.urls import url_parse
+from flask import render_template, flash, redirect, url_for
 from flask_user import current_user, login_required, roles_required
 
 from app import app, user_manager
@@ -11,32 +10,32 @@ from app.forms import *
 
 @app.route('/')
 def index():
-    if not current_user.is_authenticated:
+    # If no user is logged in, serve the default html page
+    if not current_user.is_authenticated or current_user.is_anonymous:
         return render_template('index.html')
 
+    # Return the resolutions page
     resolutions = Resolution.query.all()
-
     return render_template('resolutions.html', resolutions=resolutions, Vote=Vote, Seen=Seen)
 
 
-@app.route('/moties/<id>')
-@login_required
-def resolution(id):
-    pass
-
-
+# Endpoint to vote in favour of a resolution
 @app.route('/moties/<id>/voor')
+# Can only be done by chairmen
 @roles_required('Voorzitter')
 def vote_resolution(id):
     res = Resolution.query.get(id)
     vote = Vote(resolution_id=res.id, association=current_user.association, timestamp=datetime.now())
     db.session.add(vote)
     db.session.commit()
+    # When you vote in favour of a resolution, you have also seen the resolution, so this is marked as well
     mark_resolution_as_seen(id)
     return redirect(url_for('index'))
 
 
+# Endpoint to mark a resolution as seen
 @app.route('/moties/<id>/gezien')
+# Can only be done by chairmen
 @roles_required('Voorzitter')
 def mark_resolution_as_seen(id):
     res = Resolution.query.get(id)
@@ -46,9 +45,12 @@ def mark_resolution_as_seen(id):
     return redirect(url_for('index'))
 
 
+# Page/form to hand in resolutions
 @app.route('/moties/indienen', methods=['GET', 'POST'])
-@login_required
+# Can only be done by board members (no kandies allowed!)
+@roles_required('Bestuurslid')
 def submit_resolution():
+    # Get the form
     form = ResolutionForm()
     print(form.errors)
     if form.validate_on_submit():
@@ -68,14 +70,18 @@ def submit_resolution():
 def register_board_member():
     form = RegisterForm()
     if form.validate_on_submit():
+        # Hash the password
         password = user_manager.password_manager.hash_password(form.password.data)
+        # The new board member is of the same association as the chairman, so we save it as such
         user = User(username=form.username.data, password=password, association=current_user.association)
         db.session.add(user)
         db.session.commit()
 
+        # Give the new user the role as assigned by the chairman (either board member or kandi)
         user_manager.db_manager.add_user_role(user, form.role.data)
         user_manager.db_manager.commit()
 
+        flash("Succesvol {} {} toegevoegd. Hij/zij kan nu inloggen".format(form.role.data, user.username))
         return redirect(url_for('index'))
 
     return render_template('register_board_member.html', form=form)

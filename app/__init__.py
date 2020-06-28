@@ -1,5 +1,3 @@
-import os
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -14,8 +12,5 @@ migrate = Migrate(app, db)
 from app import models
 
 user_manager = UserManager(app, db, models.User, RoleClass=models.Role)
-
-# if not os.path.exists(app.config['UPLOADS']):
-#     os.makedirs(app.config['UPLOADS'])
 
 from app import routes

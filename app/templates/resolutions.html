@@ -3,7 +3,7 @@
 {% block content %}
     Welkom, {{ current_user.username }}! Je hebt de rol van {% if current_user.has_roles('Voorzitter') %}Voorzitter. Je kan hieronder stemmen op moties. In het menu kun je het formulier vinden om moties in te dienen.
     {% elif current_user.has_roles('Bestuurslid') %}Bestuurslid. Vraag je voorzitter om te stemmen op moties. In het menu kun je het formulier vinden om moties in te dienen.
-    {% else %}Kandi. Je kan alleen moties bekijken! Gelukkig voor jou is het WISO fysiek, dus hoef je geen moties rond te delen. Dat is boffen!{% endif %}
+    {% else %}Kandi. Je kan alleen moties bekijken! Gelukkig voor jou is het WISO online, dus hoef je geen moties rond te delen. Dat is boffen!{% endif %}
     <table>
         <thead>
             <tr>
