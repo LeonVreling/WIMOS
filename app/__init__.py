@@ -11,9 +11,11 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+from app import models
+
+user_manager = UserManager(app, db, models.User, RoleClass=models.Role)
+
 # if not os.path.exists(app.config['UPLOADS']):
 #     os.makedirs(app.config['UPLOADS'])
 
-from app import routes, models
-
-user_manager = UserManager(app, db, models.User)
+from app import routes

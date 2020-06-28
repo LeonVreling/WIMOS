@@ -2,9 +2,9 @@ from datetime import datetime
 
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
-from flask_user import current_user, login_required
+from flask_user import current_user, login_required, roles_required
 
-from app import app
+from app import app, user_manager
 from app.models import *
 from app.forms import *
 
@@ -14,6 +14,8 @@ def index():
     if not current_user.is_authenticated:
         return render_template('index.html')
 
+    print(current_user.has_roles('Admin'))
+    print(current_user.roles)
     return render_template('resolutions.html', resolutions=Resolution.query.all())
 
 
@@ -37,3 +39,22 @@ def submit_resolution():
         return redirect(url_for('index'))
 
     return render_template('resolutionform.html', form=form)
+
+
+@app.route('/leden/toevoegen', methods=['GET', 'POST'])
+@login_required
+@roles_required('Admin')
+def register_board_member():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        password = user_manager.password_manager.hash_password(form.password.data)
+        user = User(username=form.username.data, password=password, association=current_user.association)
+        db.session.add(user)
+        db.session.commit()
+
+        user_manager.db_manager.add_user_role(user, form.role.data)
+        user_manager.db_manager.commit()
+
+        return redirect(url_for('index'))
+
+    return render_template('register_board_member.html', form=form)

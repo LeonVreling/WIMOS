@@ -2,9 +2,17 @@ from app import db
 from flask_user import UserMixin
 
 
+# 1 --> Admin
+# 2 --> Organisator
+# 3 --> Voorzitter
+# 4 --> Bestuurslid
+# 5 --> Kandi
 class Role(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(64), unique=True)
+
+    def __repr__(self):
+        return "<'{}'>".format(self.name)
 
 
 class User(db.Model, UserMixin):
