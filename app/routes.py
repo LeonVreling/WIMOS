@@ -52,7 +52,7 @@ def mark_resolution_as_seen(id):
 # Page/form to hand in resolutions
 @app.route('/moties/indienen', methods=['GET', 'POST'])
 # Can only be done by board members (no kandies allowed!)
-@roles_required('Bestuurslid')
+@roles_required('Bestuurslid', 'Voorzitter')
 def submit_resolution():
     # Get the form
     form = ResolutionForm()
