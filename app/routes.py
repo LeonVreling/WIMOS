@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from app import app, user_manager
 from app.models import *
 from app.forms import *
+import app.forms as f
 
 
 @app.route('/')
@@ -56,12 +57,10 @@ def mark_resolution_as_seen(id):
 def submit_resolution():
     # Get the form
     form = ResolutionForm()
-    if len(form.errors.items()) > 0:
-        flash(form.errors)
     if form.validate_on_submit():
         res = Resolution(observation=form.observation.data, consideration=form.consideration.data,
-                         decision=form.decision.data, user_id=current_user.id, alcohol=form.alcohol.data,
-                         timestamp=datetime.now())
+                         decision=form.decision.data, user_id=current_user.id,
+                         alcohol=form.before_alcohol.data or f.alcohol_passed, timestamp=datetime.now())
         db.session.add(res)
         db.session.commit()
         return redirect(url_for('index'))
@@ -90,3 +89,17 @@ def register_board_member():
         return redirect(url_for('index'))
 
     return render_template('register_board_member.html', form=form)
+
+
+@app.route('/admin')
+@roles_required('Admin')
+def admin():
+    print(f.alcohol_passed)
+    return render_template('admin.html', alcohol_passed=f.alcohol_passed)
+
+
+@app.route('/admin/alcohol')
+@roles_required('Admin')
+def tog_alcohol():
+    toggle_alcohol()
+    return redirect(url_for('admin'))
