@@ -15,14 +15,14 @@
         <title>GEWIS E-moties</title>
         {% endif %}
     </head>
-    <body>
+    <body class="d-flex flex-column h-100">
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <a class="navbar-brand" href="{{ url_for('index') }}">
-                <img src="{{ url_for('.static', filename='img/logo.png') }}" width="30px" alt="">
-                WISO E-moties
+                <img src="{{ url_for('.static', filename='logos/wisoLogo.png') }}" width="150px" alt="">
+                <p class="title"> WISO E-moties </p>
             </a>
             {% if not current_user.is_anonymous %}
-            <ul>
+            <ul class="knop">
                 {% if current_user.has_roles('Bestuurslid') %}
                     {% with page = url_for('submit_resolution') %}
                     <li class="nav-item {% if page == request.path %}active{% endif %}">
@@ -30,6 +30,7 @@
                     </li>
                     {% endwith %}
                 {% endif %}
+
                 {% if current_user.has_roles('Voorzitter') %}
                     {% with page = url_for('register_board_member') %}
                     <li class="nav-item {% if page == request.path %}active{% endif %}">
@@ -57,7 +58,7 @@
             </ul>
         </nav>
 
-        <div class="container-lg">
+        <div class="container">
 
             {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -76,9 +77,9 @@
 
         </div>
 
-        <footer class="footer">
-            <div>
-                © Roy Kakkenberg - 2020
+        <footer class="footer mt-auto py-4">
+            <div class="container">
+                © Het 39ste bestuur der studievereniging GEWIS - 2020
             </div>
         </footer>
 

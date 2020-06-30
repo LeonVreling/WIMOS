@@ -3,25 +3,35 @@
 {% block content %}
     <form action="" method="post">
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.before_alcohol.label }}
-            {{ form.before_alcohol }}
-        </p>
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="form-group form-check highlight-form-group">
+                    {{ form.before_alcohol(class="form-check-input") }}
+                    {{ form.before_alcohol.label(class="form-check-label") }}
+                </div>
+            </div>
+        </div>
         <p>
             De leden van het WISO, ter overleg bijeen op 3 juli 2020 te Teams (wat betekent Groepen), constaterende dat<br>
-            {{ form.observation }},
+            <div class="form-group">
+                {{ form.observation(class="form-control") }}
+            </div>
         </p>
         <p>
             overwegende dat<br>
-            {{ form.consideration }},
+            <div class="form-group">
+                {{ form.consideration(class="form-control") }}
+            </div>
         </p>
         <p>
             dragen het WISO op<br>
-            {{ form.decision }},<br>
+            <div class="form-group">
+                {{ form.decision(class="form-control") }}
+            </div>
             en gaan over tot de orde van de dag.
         </p>
         <p>
-            {{ form.submit }}
+            {{ form.submit(class="btn btn-primary") }}
         </p>
     </form>
 {% endblock %}
