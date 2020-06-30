@@ -2,6 +2,11 @@ table.table {
     padding: 10px;
 }
 
+p.title {
+    font-style: oblique;
+    text-align: center;
+}
+
 .text {
     margin-top: 10px;
     margin-bottom: 10px;
