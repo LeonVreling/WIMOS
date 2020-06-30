@@ -17,8 +17,7 @@ def index():
         return render_template('index.html')
 
     # Return the resolutions page
-    resolutions = Resolution.query.all()
-    return render_template('resolutions.html', resolutions=resolutions, Vote=Vote, Seen=Seen)
+    return render_template('resolutions.html', Resolution=Resolution, Vote=Vote, Seen=Seen)
 
 
 # Endpoint to vote in favour of a resolution
@@ -66,6 +65,33 @@ def submit_resolution():
         return redirect(url_for('index'))
 
     return render_template('resolutionform.html', form=form)
+
+
+@app.route('/moties/<id>/goedkeuren')
+@roles_required('Admin')
+def pass_resolution(id):
+    res = Resolution.query.get(id)
+    res.passed = True
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/moties/<id>/afkeuren')
+@roles_required('Admin')
+def reject_resolution(id):
+    res = Resolution.query.get(id)
+    res.passed = False
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/moties/<id>/ongedaan')
+@roles_required('Admin')
+def undo_resolution_vote(id):
+    res = Resolution.query.get(id)
+    res.passed = None
+    db.session.commit()
+    return redirect(url_for('index'))
 
 
 @app.route('/leden/toevoegen', methods=['GET', 'POST'])

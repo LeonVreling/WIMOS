@@ -56,6 +56,11 @@ a.btn.btn-primary {
     width: 74px;
 }
 
+td.admin-buttons > a.btn {
+    margin-bottom: 2px;
+    width: 180px;
+}
+
 .highlight-form-group {
     padding: 10px 30px;
     border: 2px solid #ffddbc;

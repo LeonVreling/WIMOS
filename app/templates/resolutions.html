@@ -7,6 +7,10 @@
         {% elif current_user.has_roles('Bestuurslid') %}Bestuurslid. Vraag je voorzitter om te stemmen op moties. In het menu kun je het formulier vinden om moties in te dienen.
         {% else %}Kandi. Je kan alleen moties bekijken! Gelukkig voor jou is het WISO online, dus hoef je geen moties rond te delen. Dat is boffen!{% endif %}
         </p>
+        {% for i in [false, true] %}
+        {% if i == true %}
+            <h2>Moties na de alcoholstreep</h2>
+        {% endif %}
         <table class="table">
             <thead>
                 <tr>
@@ -14,10 +18,15 @@
                     <th>Motie</th>
                     <th>Voor</th>
                     <th>Gezien</th>
+                    {% if current_user.has_roles('Voorzitter') %}
                     <th>Acties</th>
+                    {% endif %}
+                    {% if current_user.has_roles(['Admin']) %}
+                    <th>Stemming</th>
+                    {% endif %}
                 </tr>
             </thead>
-            {% for r in resolutions %}
+            {% for r in Resolution.query.filter(Resolution.alcohol == i).all() %}
                 {% with votes = r.vote_list() %}
                 {% with seen = r.seen_list() %}
             <tr>
@@ -37,20 +46,29 @@
                         <img src="{{ url_for('.static', filename='logos/' + seen + '.png') }}" width="30px" alt="">
                     {% endfor %}
                 </td>
+                {% if current_user.has_roles('Voorzitter') %}
                 <td>
-                    {% if current_user.has_roles('Voorzitter') %}
-                        {% if not current_user.association in votes %}
-                            <a href="{{ url_for('vote_resolution', id=r.id) }}" class="btn btn-primary" >Voor</a>
-                        {% endif %}
-                        {% if not current_user.association in seen %}
-                            <a href="{{ url_for('mark_resolution_as_seen', id=r.id) }}" class="btn btn-primary" >Gezien</a>
-                        {% endif %}
+                    {% if not current_user.association in votes %}
+                        <a href="{{ url_for('vote_resolution', id=r.id) }}" class="btn btn-primary" >Voor</a>
+                    {% endif %}
+                    {% if not current_user.association in seen %}
+                        <a href="{{ url_for('mark_resolution_as_seen', id=r.id) }}" class="btn btn-primary" >Gezien</a>
                     {% endif %}
                 </td>
+                {% endif %}
+                {% if current_user.has_roles('Admin') %}
+                <td class="admin-buttons">
+                    <a href="{{ url_for('pass_resolution', id=r.id) }}" class="btn btn-success" >Goedgekeurd</a>
+                    <a href="{{ url_for('reject_resolution', id=r.id) }}" class="btn btn-danger" >Afgekeurd</a>
+                    <a href="{{ url_for('undo_resolution_vote', id=r.id) }}" class="btn btn-secondary" >Ongedaan maken</a>
+                </td>
+                {% endif %}
             </tr>
                 {% endwith %}
                 {% endwith %}
             {% endfor %}
         </table>
+        <hr>
+        {% endfor %}
     </div>
 {% endblock %}
