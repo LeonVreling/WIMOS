@@ -7,6 +7,8 @@
         {% elif current_user.has_roles('Bestuurslid') %}Bestuurslid. Vraag je voorzitter om te stemmen op moties. In het menu kun je het formulier vinden om moties in te dienen.
         {% else %}Kandi. Je kan alleen moties bekijken! Gelukkig voor jou is het WISO online, dus hoef je geen moties rond te delen. Dat is boffen!{% endif %}
         </p>
+
+        {% set count = [1] %}
         {% for i in [false, true] %}
         {% if i == true %}
             <h2>Moties na de alcoholstreep</h2>
@@ -39,7 +41,8 @@
                 {% endif %}
 
                 <td>
-                    2020.{{ r.id }}
+                    2020.{{ count[0] }}
+                {% if count.append(count.pop() + 1) %}{% endif %}
                 </td>
                 <td>
                     De leden van het WISO, ter overleg bijeen op 4 juli 2020 te Microsoft Teams (wat betekent Groepen), gehoord de beraadslagingen, constaterende dat <b>{{ r.observation }}</b>, overwegende dat <b>{{ r.consideration }}</b>, dragen het WISO op <b>{{ r.decision }}</b> en gaan over tot de orde van de dag.
