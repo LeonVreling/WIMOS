@@ -20,7 +20,7 @@ div.motielijst {
 
 div.container {
     margin-top: 10px;
-    min-width: 90%;
+    min-width: 95%;
 }
 
 ul.knop {
@@ -49,4 +49,9 @@ ul.knop li a:hover {
 dl, ol, ul {
     margin-top: 0;
     margin-bottom: 0;
+}
+
+a.btn.btn-primary {
+    margin-bottom: 2px;
+    width: 74px;
 }
