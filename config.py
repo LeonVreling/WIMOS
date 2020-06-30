@@ -14,3 +14,4 @@ class Config(object):
     USER_ENABLE_EMAIL = False      # Disable email authentication
     USER_ENABLE_USERNAME = True    # Enable username authentication
     USER_REQUIRE_RETYPE_PASSWORD = True    # Simplify register form
+    USER_ENABLE_REGISTER = False

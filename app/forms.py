@@ -4,12 +4,29 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Hidde
 from wtforms.validators import DataRequired, EqualTo
 
 
+alcohol_passed = False
+
+
+def toggle_alcohol():
+    global alcohol_passed
+    alcohol_passed = not alcohol_passed
+
+
 class ResolutionForm(FlaskForm):
     observation = StringField('Observatie', validators=[DataRequired()])
     consideration = StringField('Consideratie', validators=[DataRequired()])
     decision = StringField('Besluit', validators=[DataRequired()])
-    alcohol = BooleanField('Na alcoholstreep')
+    before_alcohol = BooleanField('Na alcoholstreep')
     submit = SubmitField('Versturen')
+
+    def __init__(self, *args, **kwargs):
+        print(alcohol_passed)
+        super(ResolutionForm, self).__init__(*args, **kwargs)
+        if alcohol_passed:
+            self.before_alcohol.render_kw = {'disabled': ''}
+            self.default = True
+        else:
+            self.default = False
 
 
 class RegisterForm(FlaskForm):
