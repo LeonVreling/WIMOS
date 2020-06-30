@@ -16,6 +16,7 @@ p.title {
 div.motielijst {
     margin: 10px;
     text-align: center;
+    overflow-x: auto;
 }
 
 div.container {
@@ -83,4 +84,12 @@ a.btn.btn-primary {
 
 .footer .container {
   margin-top: 0px;
+}
+
+tr.row-backgroundcolor-green {
+    background-color: darkseagreen;
+}
+
+tr.row-backgroundcolor-green {
+    background-color: palevioletred;
 }

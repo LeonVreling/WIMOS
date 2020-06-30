@@ -20,7 +20,15 @@
             {% for r in resolutions %}
                 {% with votes = r.vote_list() %}
                 {% with seen = r.seen_list() %}
-            <tr>
+
+                {% if r.passed == "True" %}
+                <tr class="row-backgroundcolor-green">
+                {% elif r.passed == "False" %}
+                <tr class="row-backgroundcolor-red">
+                {% else %}
+                <tr>
+                {% endif %}
+
                 <td>
                     2020.{{ r.id }}
                 </td>
