@@ -15,13 +15,11 @@ p.title {
 div.motielijst {
     margin: 10px;
     text-align: center;
-    min-width: 90%;
 }
 
 div.container {
     margin-top: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
+    min-width: 90%;
 }
 
 ul.knop {
