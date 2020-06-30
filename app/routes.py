@@ -1,7 +1,8 @@
 from datetime import datetime
 
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from flask_user import current_user, login_required, roles_required
+from sqlalchemy.exc import IntegrityError
 
 from app import app, user_manager
 from app.models import *
@@ -29,7 +30,10 @@ def vote_resolution(id):
     db.session.add(vote)
     db.session.commit()
     # When you vote in favour of a resolution, you have also seen the resolution, so this is marked as well
-    mark_resolution_as_seen(id)
+    try:
+        mark_resolution_as_seen(id)
+    except IntegrityError:
+        pass
     return redirect(url_for('index'))
 
 
@@ -52,7 +56,8 @@ def mark_resolution_as_seen(id):
 def submit_resolution():
     # Get the form
     form = ResolutionForm()
-    print(form.errors)
+    if len(form.errors.items()) > 0:
+        flash(form.errors)
     if form.validate_on_submit():
         res = Resolution(observation=form.observation.data, consideration=form.consideration.data,
                          decision=form.decision.data, user_id=current_user.id, alcohol=form.alcohol.data,

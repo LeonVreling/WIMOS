@@ -8,7 +8,7 @@ class ResolutionForm(FlaskForm):
     observation = StringField('Observatie', validators=[DataRequired()])
     consideration = StringField('Consideratie', validators=[DataRequired()])
     decision = StringField('Besluit', validators=[DataRequired()])
-    alcohol = BooleanField('Na alcoholstreep', validators=[DataRequired()])
+    alcohol = BooleanField('Na alcoholstreep')
     submit = SubmitField('Versturen')
 
 
