@@ -45,6 +45,9 @@ cmake-build-*/
 # File-based project format
 *.iws
 
+# Ignore database
+app.db
+
 # IntelliJ
 out/
 
