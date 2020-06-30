@@ -22,7 +22,7 @@
                 WISO E-moties
             </a>
             {% if not current_user.is_anonymous %}
-            <ul>
+            <ul class="knop">
                 {% if current_user.has_roles('Bestuurslid') %}
                     {% with page = url_for('submit_resolution') %}
                     <li class="nav-item {% if page == request.path %}active{% endif %}">
@@ -30,6 +30,7 @@
                     </li>
                     {% endwith %}
                 {% endif %}
+
                 {% if current_user.has_roles('Voorzitter') %}
                     {% with page = url_for('register_board_member') %}
                     <li class="nav-item {% if page == request.path %}active{% endif %}">
@@ -57,7 +58,7 @@
             </ul>
         </nav>
 
-        <div class="container-lg">
+        <div class="container">
 
             {% with messages = get_flashed_messages() %}
             {% if messages %}
