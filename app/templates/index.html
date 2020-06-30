@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hallo!!!</h1>
+    <h1>Hallo! </h1>
     {% if current_user %}
     <p>{{ current_user.username }}</p>
     {% endif %}
+    Welkom op het e-motie systeem. Je kunt inloggen via de knop rechtsboven. Zodra je ingelogd bent, kan je mede bestuurders en kandies toevoegen via de knop 'Bestuursleden toevoegen'.
+    Om een motie in te dienen kan je op de 'Motie indienen' knop drukken.
 {% endblock %}
