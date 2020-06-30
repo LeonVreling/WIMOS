@@ -55,3 +55,32 @@ a.btn.btn-primary {
     margin-bottom: 2px;
     width: 74px;
 }
+
+.highlight-form-group {
+    padding: 10px 30px;
+    border: 2px solid #ffddbc;
+    font-weight: 700;
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+.highlight-form-group > input {
+    margin-top: 10px;
+}
+
+/* Sticky footer */
+
+.footer {
+  background-image: none;
+  background-color: #f5f5f5;
+  transition: background-image 1.0s ease-in-out;
+}
+
+.footer:hover {
+    background-image: url("https://lh3.googleusercontent.com/proxy/NWZUmTAJ6hWlFyjAdZJ6yFPJc_cNh0E-6m_BieD4mh0tZ6pJ5I6UP2KCEcCKeBaFiBcO4Af7MqOQadJ3jwnT_z6IWz34y21GAyBvhBPxxAppr53hGq6eIOVg_ctPUxUhgw");
+    background-size: auto;
+}
+
+.footer .container {
+  margin-top: 0px;
+}

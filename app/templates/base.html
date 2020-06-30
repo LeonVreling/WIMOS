@@ -15,7 +15,7 @@
         <title>GEWIS E-moties</title>
         {% endif %}
     </head>
-    <body>
+    <body class="d-flex flex-column h-100">
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <a class="navbar-brand" href="{{ url_for('index') }}">
                 <img src="{{ url_for('.static', filename='logos/wisoLogo.png') }}" width="150px" alt="">
@@ -77,8 +77,8 @@
 
         </div>
 
-        <footer class="footer">
-            <div>
+        <footer class="footer mt-auto py-4">
+            <div class="container">
                 © Het 39ste bestuur der studievereniging GEWIS - 2020
             </div>
         </footer>
