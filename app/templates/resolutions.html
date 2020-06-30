@@ -27,14 +27,14 @@
                 <td>
                     De leden van het WISO, ter overleg bijeen op 4 juli 2020 te Microsoft Teams (wat betekent Groepen), gehoord de beraadslagingen, constaterende dat <b>{{ r.observation }}</b>, overwegende dat <b>{{ r.consideration }}</b>, dragen het WISO op <b>{{ r.decision }}</b> en gaan over tot de orde van de dag.
                 </td>
-                <td>
+                <td width="15%">
                     {% for vote in votes %}
-                        {{ vote }},
+                        <img src="{{ url_for('.static', filename='logos/' + vote + '.png') }}" width="30px" alt="">
                     {% endfor %}
                 </td>
-                <td>
+                <td width="15%">
                     {% for seen in seen %}
-                        {{ seen }},
+                        <img src="{{ url_for('.static', filename='logos/' + seen + '.png') }}" width="30px" alt="">
                     {% endfor %}
                 </td>
                 <td>
