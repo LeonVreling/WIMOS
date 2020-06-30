@@ -26,6 +26,8 @@ def index():
 @roles_required('Voorzitter')
 def vote_resolution(id):
     res = Resolution.query.get(id)
+    if res.passed is not None:
+        return redirect(url_for('index'))
     vote = Vote(resolution_id=res.id, association=current_user.association, timestamp=datetime.now())
     db.session.add(vote)
     db.session.commit()
@@ -43,6 +45,8 @@ def vote_resolution(id):
 @roles_required('Voorzitter')
 def mark_resolution_as_seen(id):
     res = Resolution.query.get(id)
+    if res.passed is not None:
+        return redirect(url_for('index'))
     seen = Seen(resolution_id=res.id, association=current_user.association, timestamp=datetime.now())
     db.session.add(seen)
     db.session.commit()

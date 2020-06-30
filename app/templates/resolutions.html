@@ -21,7 +21,7 @@
                     {% if current_user.has_roles('Voorzitter') %}
                     <th>Acties</th>
                     {% endif %}
-                    {% if current_user.has_roles(['Admin']) %}
+                    {% if current_user.has_roles('Admin') %}
                     <th>Stemming</th>
                     {% endif %}
                 </tr>
@@ -30,9 +30,9 @@
                 {% with votes = r.vote_list() %}
                 {% with seen = r.seen_list() %}
 
-                {% if r.passed == "True" %}
+                {% if r.passed == true %}
                 <tr class="row-backgroundcolor-green">
-                {% elif r.passed == "False" %}
+                {% elif r.passed == false %}
                 <tr class="row-backgroundcolor-red">
                 {% else %}
                 <tr>
@@ -56,11 +56,13 @@
                 </td>
                 {% if current_user.has_roles('Voorzitter') %}
                 <td>
+                    {% if r.passed == none %}
                     {% if not current_user.association in votes %}
                         <a href="{{ url_for('vote_resolution', id=r.id) }}" class="btn btn-primary" >Voor</a>
                     {% endif %}
                     {% if not current_user.association in seen %}
                         <a href="{{ url_for('mark_resolution_as_seen', id=r.id) }}" class="btn btn-primary" >Gezien</a>
+                    {% endif %}
                     {% endif %}
                 </td>
                 {% endif %}
