@@ -1,3 +1,6 @@
+from sqlalchemy import select
+from sqlalchemy.orm import column_property
+
 from app import db
 from flask_user import UserMixin
 
@@ -85,6 +88,8 @@ class Resolution(db.Model):
     votes = db.relationship('Vote', backref='resolution', lazy='dynamic')
     # Records of seen
     seen_by = db.relationship('Seen', backref='resolution', lazy='dynamic')
+
+    association = column_property(select([User.association]).where(User.id == user_id))
 
     # Parse the vote objects into a list of strings (association names)
     def vote_list(self):
