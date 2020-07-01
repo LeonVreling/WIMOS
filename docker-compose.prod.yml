@@ -1,0 +1,28 @@
+version: '2.0'
+
+services:
+  web:
+    image: docker-registry.gewis.nl/wiso/web
+    command: gunicorn --bind 0.0.0.0:5000 app:app
+    volumes:
+      - database_volume:/code/db
+    environment:
+      SQLALCHEMY_DATABASE_URI: sqlite:///code/db/app.db
+    expose:
+    - 5000
+    networks:
+      - wiso
+  nginx:
+    image: docker-registry.gewis.nl/wiso/nginx
+    ports:
+      - 3336:80
+    depends_on:
+      - web
+    networks:
+      - wiso
+volumes:
+  database_volume:
+networks:
+  wiso:
+    drive: bridge
+
