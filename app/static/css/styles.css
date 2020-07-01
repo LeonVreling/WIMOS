@@ -52,7 +52,7 @@ dl, ol, ul {
     margin-bottom: 0;
 }
 
-a.btn.btn-primary {
+td > a.btn.btn-primary {
     margin-bottom: 2px;
     width: 74px;
 }

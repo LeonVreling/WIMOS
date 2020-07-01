@@ -102,7 +102,7 @@ def undo_resolution_vote(id):
 @login_required
 @roles_required('Voorzitter')
 def register_board_member():
-    form = RegisterForm()
+    form = RegisterBoardMemberForm()
     if form.validate_on_submit():
         # Hash the password
         password = user_manager.password_manager.hash_password(form.password.data)
@@ -121,11 +121,28 @@ def register_board_member():
     return render_template('register_board_member.html', form=form)
 
 
-@app.route('/admin')
+@app.route('/admin', methods=['GET', 'POST'])
 @roles_required('Admin')
 def admin():
-    print(f.alcohol_passed)
-    return render_template('admin.html', alcohol_passed=f.alcohol_passed)
+    form = RegisterChairmanForm()
+
+    if form.validate_on_submit():
+        # Hash the password
+        password = user_manager.password_manager.hash_password(form.password.data)
+        # The new board member is of the same association as the chairman, so we save it as such
+        user = User(username=form.username.data, password=password, association=form.association.data)
+        db.session.add(user)
+        db.session.commit()
+
+        # Give the new user the role as assigned by the chairman (either board member or kandi)
+        user_manager.db_manager.add_user_role(user, 'Voorzitter')
+        user_manager.db_manager.add_user_role(user, 'Bestuurslid')
+        user_manager.db_manager.commit()
+
+        flash("Succesvol {} van {} toegevoegd. Hij/zij kan nu inloggen".format(user.username, form.association.data))
+
+    users = User.query.order_by(User.association).all()
+    return render_template('admin.html', alcohol_passed=f.alcohol_passed, form=form, User=User, users=users)
 
 
 @app.route('/admin/alcohol')
