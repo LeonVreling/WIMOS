@@ -56,7 +56,7 @@ def mark_resolution_as_seen(id):
 # Page/form to hand in resolutions
 @app.route('/moties/indienen', methods=['GET', 'POST'])
 # Can only be done by board members (no kandies allowed!)
-@roles_required('Bestuurslid', 'Voorzitter')
+@roles_required('Bestuurslid')
 def submit_resolution():
     # Get the form
     form = ResolutionForm()
@@ -65,6 +65,11 @@ def submit_resolution():
                          decision=form.decision.data, user_id=current_user.id,
                          alcohol=form.before_alcohol.data or f.alcohol_passed, timestamp=datetime.now())
         db.session.add(res)
+        db.session.commit()
+        seen = Seen(resolution_id=res.id, association=current_user.association, timestamp=datetime.now())
+        db.session.add(seen)
+        vote = Vote(resolution_id=res.id, association=current_user.association, timestamp=datetime.now())
+        db.session.add(vote)
         db.session.commit()
         return redirect(url_for('index'))
 
@@ -99,7 +104,6 @@ def undo_resolution_vote(id):
 
 
 @app.route('/leden/toevoegen', methods=['GET', 'POST'])
-@login_required
 @roles_required('Voorzitter')
 def register_board_member():
     form = RegisterBoardMemberForm()
