@@ -20,16 +20,17 @@ class ResolutionForm(FlaskForm):
     submit = SubmitField('Versturen')
 
     def __init__(self, *args, **kwargs):
-        print(alcohol_passed)
         super(ResolutionForm, self).__init__(*args, **kwargs)
         if alcohol_passed:
             self.before_alcohol.render_kw = {'disabled': ''}
-            self.default = True
+            self.before_alcohol.default = alcohol_passed
+            self.before_alcohol.data = alcohol_passed
         else:
-            self.default = False
+            self.before_alcohol.default = alcohol_passed
+            self.before_alcohol.data = alcohol_passed
 
 
-class RegisterForm(FlaskForm):
+class RegisterBoardMemberForm(FlaskForm):
     """Register new user form."""
     password_validator_added = False
 
@@ -41,8 +42,7 @@ class RegisterForm(FlaskForm):
         username_validator,
         unique_username_validator])
     password = PasswordField('Wachtwoord', validators=[
-        DataRequired('Wachtwoord is verplicht'),
-        password_validator])
+        DataRequired('Wachtwoord is verplicht')])
     retype_password = PasswordField('Herhaal wachtwoord', validators=[
         EqualTo('password', message='Wachtwoorden zijn niet hetzelfde')])
 
@@ -52,7 +52,34 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('Registreren')
 
     def validate(self):
-        if not super(RegisterForm, self).validate():
+        if not super(RegisterBoardMemberForm, self).validate():
+            return False
+        # All is well
+        return True
+
+
+class RegisterChairmanForm(FlaskForm):
+    """Register new user form."""
+    password_validator_added = False
+
+    next = HiddenField()  # for login_or_register.html
+    reg_next = HiddenField()  # for register.html
+
+    username = StringField('Gebruikersnaam', validators=[
+        DataRequired('Gebruikersnaam is verplicht'),
+        username_validator,
+        unique_username_validator])
+    password = PasswordField('Wachtwoord', validators=[
+        DataRequired('Wachtwoord is verplicht')])
+    retype_password = PasswordField('Herhaal wachtwoord', validators=[
+        EqualTo('password', message='Wachtwoorden zijn niet hetzelfde')])
+
+    association = StringField('Vereniging', validators=[DataRequired('Vereniging is verplicht')])
+
+    submit = SubmitField('Registreren')
+
+    def validate(self):
+        if not super(RegisterChairmanForm, self).validate():
             return False
         # All is well
         return True
