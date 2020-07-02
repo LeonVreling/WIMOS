@@ -53,7 +53,7 @@ class Vote(db.Model):
     # ID of the resolution
     resolution_id = db.Column(db.Integer(), db.ForeignKey('resolution.id'), primary_key=True)
     # Name of association who voted in favour
-    association = db.Column(db.String(), primary_key=True)
+    association = db.Column(db.String(32), primary_key=True)
     # Time and date of this vote
     timestamp = db.Column(db.DateTime())
 
@@ -62,7 +62,7 @@ class Seen(db.Model):
     # ID of the resolution
     resolution_id = db.Column(db.Integer(), db.ForeignKey('resolution.id'), primary_key=True)
     # Name of association who marked the resolution as seen
-    association = db.Column(db.String(), primary_key=True)
+    association = db.Column(db.String(32), primary_key=True)
     # Time and date of this seen
     timestamp = db.Column(db.DateTime())
 

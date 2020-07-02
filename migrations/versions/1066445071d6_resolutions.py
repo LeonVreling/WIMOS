@@ -26,12 +26,13 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
     sa.Column('passed', sa.Boolean(), nullable=True),
+    sa.Column('alcohol', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('vote',
     sa.Column('resolution_id', sa.Integer(), nullable=False),
-    sa.Column('association', sa.String(), nullable=False),
+    sa.Column('association', sa.String(length=32), nullable=False),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['resolution_id'], ['resolution.id'], ),
     sa.PrimaryKeyConstraint('resolution_id', 'association')
