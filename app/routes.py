@@ -17,7 +17,7 @@ def index():
         return render_template('index.html')
 
     # Return the resolutions page
-    return render_template('resolutions.html', Resolution=Resolution, Vote=Vote, Seen=Seen)
+    return render_template('resolutions.html', Resolution=Resolution, Vote=Vote, Seen=Seen, time=datetime.now())
 
 
 # Endpoint to vote in favour of a resolution

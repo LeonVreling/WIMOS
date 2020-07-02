@@ -98,3 +98,8 @@ tr.row-backgroundcolor-green {
 tr.row-backgroundcolor-red {
     background-color: palevioletred;
 }
+
+.loaded {
+    text-align: right;
+    margin: 3px;
+}
