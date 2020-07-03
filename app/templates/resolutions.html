@@ -61,12 +61,12 @@
                 </td>
                 <td width="10%">
                     {% for vote in votes %}
-                        <img src="{{ url_for('.static', filename='logos/' + vote + '.png') }}" width="30px" alt="">
+                        <img src="{{ url_for('.static', filename='logos/' + vote + '.png') }}" width="30px" alt="{{ vote }}">
                     {% endfor %}
                 </td>
                 <td width="12%">
                     {% for seen in seen %}
-                        <img src="{{ url_for('.static', filename='logos/' + seen + '.png') }}" width="30px" alt="">
+                        <img src="{{ url_for('.static', filename='logos/' + seen + '.png') }}" width="30px" alt="{{ vote }}">
                     {% endfor %}
                 </td>
                 {% if current_user.has_roles('Voorzitter') %}
