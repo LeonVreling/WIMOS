@@ -1,6 +1,6 @@
 from flask_user.forms import username_validator, unique_username_validator, password_validator
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, HiddenField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, HiddenField, SelectField, IntegerField
 from wtforms.validators import DataRequired, EqualTo
 
 
@@ -83,3 +83,9 @@ class RegisterChairmanForm(FlaskForm):
             return False
         # All is well
         return True
+
+
+class LocationAndStartingNumberForm(FlaskForm):
+    location = StringField('Locatie', validators=[DataRequired()])
+    starting_number = IntegerField('Nummer van eerstvolgende motie', validators=[DataRequired()])
+    submit = SubmitField('Opslaan')

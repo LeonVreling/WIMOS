@@ -28,33 +28,33 @@
             <div class="col">
                 <h4>Voorzitters toevoegen</h4>
                 <form action="" method="post" novalidate>
-                    {{ form.hidden_tag() }}
+                    {{ chairman_form.hidden_tag() }}
                     <p>
                     <div class="form-group">
-                        {{ form.username.label(for="username") }}
-                        {{ form.username(class="form-control", id="username") }}
+                        {{ chairman_form.username.label(for="username") }}
+                        {{ chairman_form.username(class="form-control", id="username") }}
                     </div>
                     </p>
                     <p>
                     <div class="form-group">
-                        {{ form.password.label(for="password") }}<br>
-                        {{ form.password(class="form-control", id="password") }}
+                        {{ chairman_form.password.label(for="password") }}<br>
+                        {{ chairman_form.password(class="form-control", id="password") }}
                     </div>
                     </p>
                     <p>
                     <div class="form-group">
-                        {{ form.retype_password.label(for="retype_password") }}<br>
-                        {{ form.retype_password(class="form-control", id="retype_password") }}
+                        {{ chairman_form.retype_password.label(for="retype_password") }}<br>
+                        {{ chairman_form.retype_password(class="form-control", id="retype_password") }}
                     </div>
                     </p>
                     <p>
                     <div class="form-group">
-                        {{ form.association.label(for="association") }}<br>
-                        {{ form.association(class="form-control", id="association") }}
+                        {{ chairman_form.association.label(for="association") }}<br>
+                        {{ chairman_form.association(class="form-control", id="association") }}
                     </div>
                     </p>
                     <p>
-                        {{ form.submit(class="btn btn-primary") }}
+                        {{ chairman_form.submit(class="btn btn-primary") }}
                     </p>
                 </form>
                 <h4>Acties voor WIMOS</h4>
@@ -63,6 +63,27 @@
                 <button type="button" class="btn btn-danger" data-toggle="modal"
                         data-target="#deleteAllResolutionsModal">Verwijder alle moties
                 </button>
+            </div>
+            <div class="col">
+                <h4>Stel locatie en eerste motienummer in</h4>
+                <form action="" method="post" novalidate>
+                    {{ variable_form.hidden_tag() }}
+                    <p>
+                    <div class="form-group">
+                        {{ variable_form.location.label(for="location") }}
+                        {{ variable_form.location(class="form-control", id="location", value=location) }}
+                    </div>
+                    </p>
+                    <p>
+                    <div class="form-group">
+                        {{ variable_form.starting_number.label(for="starting_number") }}<br>
+                        {{ variable_form.starting_number(class="form-control", id="starting_number", value=starting_number) }}
+                    </div>
+                    </p>
+                    <p>
+                        {{ variable_form.submit(class="btn btn-primary") }}
+                    </p>
+                </form>
             </div>
             <div class="col">
                 <table class="table">
