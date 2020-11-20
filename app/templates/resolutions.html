@@ -34,7 +34,7 @@
                     {% if current_user.has_roles('Voorzitter') %}
                     <th>Acties</th>
                     {% endif %}
-                    {% if current_user.has_roles('Admin') %}
+                    {% if current_user.has_roles('Organisator') %}
                     <th>Stemming</th>
                     {% endif %}
                 </tr>
@@ -57,7 +57,7 @@
                     <i>{{ r.association }}</i>
                 </td>
                 <td>
-                    De leden van het WISO, ter overleg bijeen op 4 juli 2020 te Microsoft Teams (wat betekent Groepen), gehoord de beraadslagingen, constaterende dat <b>{{ r.observation }}</b>, overwegende dat <b>{{ r.consideration }}</b>, dragen het WISO op <b>{{ r.decision }}</b> en gaan over tot de orde van de dag.
+                    De leden van het WISO, ter overleg bijeen op {{ parse_date(r.timestamp) }} te Microsoft Teams (wat betekent Groepen), gehoord de beraadslagingen, constaterende dat <b>{{ r.observation }}</b>, overwegende dat <b>{{ r.consideration }}</b>, dragen het WISO op <b>{{ r.decision }}</b> en gaan over tot de orde van de dag.
                 </td>
                 <td width="10%">
                     {% for vote in votes %}
@@ -81,7 +81,7 @@
                     {% endif %}
                 </td>
                 {% endif %}
-                {% if current_user.has_roles('Admin') %}
+                {% if current_user.has_roles('Organisator') %}
                 <td class="admin-buttons">
                     <a href="{{ url_for('pass_resolution', id=r.id) }}" class="btn btn-success" >Goedgekeurd</a>
                     <a href="{{ url_for('reject_resolution', id=r.id) }}" class="btn btn-danger" >Afgekeurd</a>

@@ -77,7 +77,7 @@ def submit_resolution():
 
 
 @app.route('/moties/<id>/goedkeuren')
-@roles_required('Admin')
+@roles_required('Organisator')
 def pass_resolution(id):
     res = Resolution.query.get(id)
     res.passed = True
@@ -86,7 +86,7 @@ def pass_resolution(id):
 
 
 @app.route('/moties/<id>/afkeuren')
-@roles_required('Admin')
+@roles_required('Organisator')
 def reject_resolution(id):
     res = Resolution.query.get(id)
     res.passed = False
@@ -95,7 +95,7 @@ def reject_resolution(id):
 
 
 @app.route('/moties/<id>/ongedaan')
-@roles_required('Admin')
+@roles_required('Organisator')
 def undo_resolution_vote(id):
     res = Resolution.query.get(id)
     res.passed = None
@@ -126,7 +126,7 @@ def register_board_member():
 
 
 @app.route('/admin', methods=['GET', 'POST'])
-@roles_required('Admin')
+@roles_required('Organisator')
 def admin():
     form = RegisterChairmanForm()
 
@@ -150,7 +150,44 @@ def admin():
 
 
 @app.route('/admin/alcohol')
-@roles_required('Admin')
+@roles_required('Organisator')
 def tog_alcohol():
     toggle_alcohol()
     return redirect(url_for('admin'))
+
+
+@app.route('/admin/gebruiker/verwijderen/<id>')
+@roles_required('Organisator')
+def admin_delete_user(id):
+    user = User.query.get(id)
+    resolutions = Resolution.query.filter(Resolution.user_id == id).all()
+    if user.has_roles('Admin'):
+        flash('Gebruiker {} is een administrator en kan niet verwijderd worden'.format(user.username), 'danger')
+    elif len(resolutions) > 0:
+        flash('Gebruiker {} kan niet verwijderd worden, omdat hij/zij moties heeft ingediend'.format(user.username),
+              'danger')
+    else:
+        db.session.delete(user)
+        db.session.commit()
+        flash('Gebruiker {} succesvol verwijderd'.format(user.username), 'success')
+    return redirect(url_for('admin'))
+
+
+@app.route('/admin/moties/verwijderen')
+@roles_required('Admin')
+def admin_delete_all_resolutions():
+    Vote.query.delete()
+    Seen.query.delete()
+    Resolution.query.delete()
+    db.session.commit()
+    flash('Alle moties succesvol verwijderd')
+    return redirect(url_for('admin'))
+
+
+@app.route('/force')
+def force_create_admin():
+    password = user_manager.password_manager.hash_password('gewis')
+    # The new board member is of the same association as the chairman, so we save it as such
+    user = User(username='Roy3', password=password, association='GEWIS')
+    db.session.add(user)
+    db.session.commit()

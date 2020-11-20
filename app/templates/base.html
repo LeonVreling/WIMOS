@@ -39,7 +39,7 @@
                     {% endwith %}
                 {% endif %}
 
-                {% if current_user.has_roles('Admin') %}
+                {% if current_user.has_roles('Organisator') %}
                     {% with page = url_for('admin') %}
                     <li class="nav-item {% if page == request.path %}active{% endif %}">
                         <a class="nav-link" href="{{ page }}">Admin</a>
@@ -68,11 +68,11 @@
 
         <div class="container">
 
-            {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             <ul>
-                {% for message in messages %}
-                <div class="alert alert-success alert-dismissible" role="alert">
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category or 'success' }} alert-dismissible" role="alert">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     {{ message }}
                 </div>

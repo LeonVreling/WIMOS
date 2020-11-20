@@ -1,6 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="modal fade" id="deleteAllResolutionsModal" tabindex="-1" role="dialog" aria-labelledby="deleteAllResolutionsModal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Verwijder alle moties</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Weet je zeker dat je alle moties wilt verwijderen?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
+                    <a href="{{ url_for('admin_delete_all_resolutions') }}" class="btn btn-danger">Verwijderen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h1>Admin paneel</h1>
     <div class="container">
         <div class="row">
@@ -9,44 +30,49 @@
                 <form action="" method="post" novalidate>
                     {{ form.hidden_tag() }}
                     <p>
-                        <div class="form-group">
-                            {{ form.username.label(for="username") }}
-                            {{ form.username(class="form-control", id="username") }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.username.label(for="username") }}
+                        {{ form.username(class="form-control", id="username") }}
+                    </div>
                     </p>
                     <p>
-                        <div class="form-group">
-                            {{ form.password.label(for="password") }}<br>
-                            {{ form.password(class="form-control", id="password") }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.password.label(for="password") }}<br>
+                        {{ form.password(class="form-control", id="password") }}
+                    </div>
                     </p>
                     <p>
-                        <div class="form-group">
-                            {{ form.retype_password.label(for="retype_password") }}<br>
-                            {{ form.retype_password(class="form-control", id="retype_password") }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.retype_password.label(for="retype_password") }}<br>
+                        {{ form.retype_password(class="form-control", id="retype_password") }}
+                    </div>
                     </p>
                     <p>
-                        <div class="form-group">
-                            {{ form.association.label(for="association") }}<br>
-                            {{ form.association(class="form-control", id="association") }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.association.label(for="association") }}<br>
+                        {{ form.association(class="form-control", id="association") }}
+                    </div>
                     </p>
                     <p>
                         {{ form.submit(class="btn btn-primary") }}
                     </p>
                 </form>
                 <h4>Acties voor WIMOS</h4>
-                <a href="{{ url_for('tog_alcohol') }}" class="button btn btn-primary">{% if not alcohol_passed %}Moties alleen na alcoholstreep{% else %}Moties voor en na alcoholstreep{% endif %}</a>
+                <a href="{{ url_for('tog_alcohol') }}" class="button btn btn-primary">{% if not alcohol_passed %}Moties
+                    alleen na alcoholstreep{% else %}Moties voor en na alcoholstreep{% endif %}</a>
+                <button type="button" class="btn btn-danger" data-toggle="modal"
+                        data-target="#deleteAllResolutionsModal">Verwijder alle moties
+                </button>
             </div>
             <div class="col">
                 <table class="table">
                     <thead>
-                        <tr>
-                            <th>Naam</th>
-                            <th>Vereniging</th>
-                            <th>Rollen</th>
-                        </tr>
+                    <tr>
+                        <th>Naam</th>
+                        <th>Vereniging</th>
+                        <th>Rollen</th>
+                        <th></th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for u in users %}
@@ -54,6 +80,7 @@
                             <td>{{ u.username }}</td>
                             <td>{{ u.association }}</td>
                             <td>{{ u.roles }}</td>
+                            <td>{% if not u.has_roles('Admin') %}<a href="{{ url_for('admin_delete_user', id=u.id) }}" class="btn btn-danger">Verwijderen</a>{% endif %}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
