@@ -1,8 +1,7 @@
-from flask_user.forms import username_validator, unique_username_validator, password_validator
+from flask_user.forms import username_validator, unique_username_validator, password_validator, unique_email_validator
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, HiddenField, SelectField, IntegerField
-from wtforms.validators import DataRequired, EqualTo
-
+from wtforms.validators import DataRequired, EqualTo, Email
 
 alcohol_passed = False
 
@@ -41,6 +40,10 @@ class RegisterBoardMemberForm(FlaskForm):
         DataRequired('Gebruikersnaam is verplicht'),
         username_validator,
         unique_username_validator])
+    email = StringField('Email', validators=[
+        DataRequired('Email is required'),
+        Email('Invalid Email'),
+        unique_email_validator])
     password = PasswordField('Wachtwoord', validators=[
         DataRequired('Wachtwoord is verplicht')])
     retype_password = PasswordField('Herhaal wachtwoord', validators=[
@@ -69,6 +72,10 @@ class RegisterChairmanForm(FlaskForm):
         DataRequired('Gebruikersnaam is verplicht'),
         username_validator,
         unique_username_validator])
+    email = StringField('Email', validators=[
+        DataRequired('Email is required'),
+        Email('Invalid Email'),
+        unique_email_validator])
     password = PasswordField('Wachtwoord', validators=[
         DataRequired('Wachtwoord is verplicht')])
     retype_password = PasswordField('Herhaal wachtwoord', validators=[

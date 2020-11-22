@@ -33,8 +33,9 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(128))
     # Whether the account is active and can be used
     active = db.Column(db.Boolean(), default=True)
-    # Email address of the user (not used)
+    # Email address of the user
     email = db.Column(db.String(128), unique=True)
+    email_confirmed_at = db.Column(db.DateTime())
     # Roles that this user has
     roles = db.relationship('Role', secondary='user_roles')
     # Association this user is a member of

@@ -37,6 +37,12 @@
                     </p>
                     <p>
                     <div class="form-group">
+                        {{ chairman_form.email.label(for="email") }}<br>
+                        {{ chairman_form.email(class="form-control", id="email") }}
+                    </div>
+                    </p>
+                    <p>
+                    <div class="form-group">
                         {{ chairman_form.password.label(for="password") }}<br>
                         {{ chairman_form.password(class="form-control", id="password") }}
                     </div>
@@ -90,7 +96,8 @@
                     <thead>
                     <tr>
                         <th>Naam</th>
-                        <th>Vereniging</th>
+                        <th></th>
+                        <th>Email</th>
                         <th>Rollen</th>
                         <th></th>
                     </tr>
@@ -99,7 +106,8 @@
                     {% for u in users %}
                         <tr>
                             <td>{{ u.username }}</td>
-                            <td>{{ u.association }}</td>
+                            <td><img src="{{ url_for('.static', filename='logos/' + u.association + '.png') }}" width="30px" alt="{{ u.association }}"></td>
+                            <td>{{ u.email }}</td>
                             <td>{{ u.roles }}</td>
                             <td>{% if not u.has_roles('Admin') %}<a href="{{ url_for('admin_delete_user', id=u.id) }}" class="btn btn-danger">Verwijderen</a>{% endif %}</td>
                         </tr>

@@ -5,6 +5,8 @@ Revises:
 Create Date: 2020-06-26 18:07:52.236200
 
 """
+from datetime import datetime
+
 from alembic import op
 import sqlalchemy as sa
 from app import user_manager
@@ -60,6 +62,8 @@ def upgrade():
                    [{'id': 1,
                      'username': os.environ.get('WIMOS_ADMIN_USERNAME'),
                      'password': user_manager.password_manager.hash_password(os.environ.get('WIMOS_ADMIN_PASSWORD')),
+                     'email': os.environ.get('WIMOS_ADMIN_EMAIL'),
+                     'email_confirmed_at': datetime.now(),
                      'active': True,
                      'association': os.environ.get('WIMOS_ADMIN_ASSOCIATION')
                      }]

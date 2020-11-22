@@ -116,13 +116,16 @@ def register_board_member():
         # Hash the password
         password = user_manager.password_manager.hash_password(form.password.data)
         # The new board member is of the same association as the chairman, so we save it as such
-        user = User(username=form.username.data, password=password, association=current_user.association)
+        user = User(username=form.username.data, password=password, email=form.email.data,
+                    email_confirmed_at=datetime.now(), association=current_user.association)
         db.session.add(user)
         db.session.commit()
 
         # Give the new user the role as assigned by the chairman (either board member or kandi)
         user_manager.db_manager.add_user_role(user, form.role.data)
         user_manager.db_manager.commit()
+
+        user_manager.email_manager.send_registered_email(user, None, False)
 
         flash("Succesvol {} {} toegevoegd. Hij/zij kan nu inloggen".format(form.role.data, user.username), 'success')
         return redirect(url_for('index'))
@@ -142,7 +145,8 @@ def admin():
         # Hash the password
         password = user_manager.password_manager.hash_password(chairman_form.password.data)
         # The new board member is of the same association as the chairman, so we save it as such
-        user = User(username=chairman_form.username.data, password=password, association=chairman_form.association.data)
+        user = User(username=chairman_form.username.data, password=password, email=chairman_form.email.data,
+                    email_confirmed_at=datetime.now(), association=chairman_form.association.data)
         db.session.add(user)
         db.session.commit()
 
@@ -150,6 +154,8 @@ def admin():
         user_manager.db_manager.add_user_role(user, 'Voorzitter')
         user_manager.db_manager.add_user_role(user, 'Bestuurslid')
         user_manager.db_manager.commit()
+
+        user_manager.email_manager.send_registered_email(user, None, False)
 
         flash("Succesvol {} van {} toegevoegd. Hij/zij kan nu inloggen".format(user.username, chairman_form.association.data), 'success')
 

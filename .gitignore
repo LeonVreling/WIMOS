@@ -202,3 +202,6 @@ dmypy.json
 .idea/inspectionProfiles/
 .idea/other.xml
 .idea/workspace.xml
+
+# Dotenv environment variables
+.env
