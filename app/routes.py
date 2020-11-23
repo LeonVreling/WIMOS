@@ -183,12 +183,19 @@ def tog_alcohol():
 def admin_delete_user(id):
     user = User.query.get(id)
     resolutions = Resolution.query.filter(Resolution.user_id == id).all()
+    # Cancel deletion if the user is an admin (as you cannot delete admins)
     if user.has_roles('Admin'):
         flash('Gebruiker {} is een administrator en kan niet verwijderd worden'.format(user.username), 'danger')
+    # Cancel deletion if the user has resolutions, otherwise we get missing references
     elif len(resolutions) > 0:
         flash('Gebruiker {} kan niet verwijderd worden, omdat hij/zij moties heeft ingediend'.format(user.username),
               'danger')
     else:
+        # First, delete all roles of this user
+        roles = UserRoles.query.filter(UserRoles.user_id == id).all()
+        for r in roles:
+            db.session.delete(r)
+        # Then delete the user
         db.session.delete(user)
         db.session.commit()
         flash('Gebruiker {} succesvol verwijderd'.format(user.username), 'success')
