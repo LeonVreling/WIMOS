@@ -161,7 +161,7 @@ def admin():
 
     if variable_form.submit.data and variable_form.validate_on_submit():
         location = variable_form.location.data
-        starting_number = variable_form.starting_number.data
+        starting_number = variable_form.starting_number.data - 1
 
         flash("Succesvol locatie en eerste motienummer aangepast", 'success')
 

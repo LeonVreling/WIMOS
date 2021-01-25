@@ -52,7 +52,7 @@
                 {% endif %}
 
                 <td>
-                    2020.{{ count[0] + starting_number }}
+                    {{ r.timestamp.strftime("%Y") }}.{{ count[0] + starting_number }}
                 {% if count.append(count.pop() + 1) %}{% endif %}<br>
                     <i>{{ r.association }}</i>
                 </td>
