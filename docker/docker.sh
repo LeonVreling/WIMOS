@@ -1,22 +1,22 @@
 case $1 in
 	deploy)
-		sudo docker build . \
+		docker build . \
 			-f docker/web/Dockerfile.prod \
-			-t docker-registry.gewis.nl/wiso/web \
-			&& sudo docker push docker-registry.gewis.nl/wiso/web \
-			&& sudo docker build . \
+			-t board.docker-registry.gewis.nl/wiso/web \
+			&& docker push board.docker-registry.gewis.nl/wiso/web \
+			&& docker build . \
 			-f docker/nginx/Dockerfile.prod \
-			-t docker-registry.gewis.nl/wiso/nginx \
-			&& sudo docker push docker-registry.gewis.nl/wiso/nginx
+			-t board.docker-registry.gewis.nl/wiso/nginx \
+			&& docker push board.docker-registry.gewis.nl/wiso/nginx
 					;;
 	up)
-		sudo docker build . \
+		docker build . \
 			-f docker/web/Dockerfile.prod \
-			-t docker-registry.gewis.nl/wiso/web \
-			&& sudo docker build . \
+			-t board.docker-registry.gewis.nl/wiso/web \
+			&& docker build . \
 			-f docker/nginx/Dockerfile.prod \
-			-t docker-registry.gewis.nl/wiso/nginx \
-			&& sudo docker-compose up -f docker-compose.prod.yml
+			-t board.docker-registry.gewis.nl/wiso/nginx \
+			&& docker-compose up -f docker-compose.prod.yml
 					;;
 	*)
 		;;
